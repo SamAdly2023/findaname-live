@@ -40,10 +40,10 @@ export default function LandingPage() {
                     <HeroParticles />
 
                     <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-                        <div className="inline-block mb-4 px-4 py-1 rounded-full bg-indigo-900/50 border border-indigo-500/30 text-indigo-300 text-sm font-semibold tracking-wide backdrop-blur-sm animate-fade-in-up">
+                        <div className="inline-block mb-4 px-4 py-1 rounded-full bg-pink-900/50 border border-pink-500/30 text-pink-300 text-sm font-semibold tracking-wide backdrop-blur-sm animate-fade-in-up">
                             AI-POWERED DOMAIN INTELLIGENCE
                         </div>
-                        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-100 to-indigo-400 drop-shadow-lg">
+                        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-pink-100 to-pink-400 drop-shadow-lg animate-pulse-slow">
                             Find the Perfect Name <br /> Build Your Digital Empire.
                         </h1>
                         <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -127,7 +127,7 @@ export default function LandingPage() {
                                     Most Popular
                                 </div>
                                 <h3 className="text-2xl font-bold text-white mb-2">Professional</h3>
-                                <div className="text-5xl font-extrabold mb-6 text-white">$27<span className="text-xl text-indigo-200 font-medium">/mo</span></div>
+                                <div className="text-5xl font-extrabold mb-6 text-white">$49<span className="text-xl text-indigo-200 font-medium">/mo</span></div>
                                 <p className="text-indigo-200 mb-8 border-b border-indigo-500/30 pb-8">For serious investors and agencies.</p>
                                 <ul className="space-y-4 mb-8">
                                     <li className="flex items-center gap-3 text-white"><Check className="text-cyan-400" /> <strong>Unlimited</strong> Searches</li>
@@ -146,7 +146,7 @@ export default function LandingPage() {
                                                     purchase_units: [{
                                                         amount: {
                                                             currency_code: "USD",
-                                                            value: "27.00"
+                                                            value: "49.00"
                                                         },
                                                         description: "FindAName Pro Subscription"
                                                     }]
