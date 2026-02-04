@@ -60,9 +60,26 @@ export const WhoisLookupTool: React.FC = () => {
 
             {data && (
                 <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden text-sm">
-                    <pre className="p-4 text-gray-300 font-mono whitespace-pre-wrap overflow-x-auto">
-                        {data.rawText || JSON.stringify(data, null, 2)}
-                    </pre>
+                    {data.error ? (
+                        <div className="p-4 bg-red-900/10 text-red-300">
+                           <strong>Error:</strong> {data.error}
+                        </div>
+                    ) : (
+                        <pre className="p-4 text-gray-300 font-mono whitespace-pre-wrap overflow-x-auto">
+                            {/* Format fields nicely if available, else dumping raw */}
+                            {data.registrar && `Registrar: ${data.registrar}\n`}
+                            {data.creationDate && `Created: ${data.creationDate}\n`}
+                            {data.expirationDate && `Expires: ${data.expirationDate}\n`}
+                            {data.nameServers && data.nameServers.length > 0 && `Name Servers:\n  ${data.nameServers.join('\n  ')}\n`}
+                            {data.status && data.status.length > 0 && `\nStatus:\n  ${data.status.join('\n  ')}\n`}
+                            
+                            {/* Fallback to raw text if specific fields missing but no error */}
+                            {(!data.registrar && !data.creationDate && data.rawText) ? data.rawText : ''}
+                            
+                            {/* Fallback debug view for other props */}
+                            {(!data.registrar && !data.creationDate && !data.rawText) && JSON.stringify(data, null, 2)}
+                        </pre>
+                    )}
                 </div>
             )}
         </div>
