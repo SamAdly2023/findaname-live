@@ -2,6 +2,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, useGoogleOneTapLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 // Pages & Components
@@ -214,26 +215,16 @@ function AppContent() {
     const { login, user } = useAuth();
 
     useGoogleOneTapLogin({
-        onSuccess: async (credentialResponse) => {
-            // One Tap returns an ID token (JWT), not an access token like the popup flow.
-            // We need to decode it or verify it. simpler is to trust the decoded payload if we just want basics.
-            // However, to keep it consistent with the AuthContext expectation (which expects 'userData' object),
-            // We might need to decode the credentialResponse.credential JWT.
-            // For simplicity in this demo without a backend to verify, we'll try to default to the popup login if this is too complex,
-            // BUT user explicitly asked for "popup shows on the top right... automatically login".
-            // The One Tap gives us a JWT. We can use `jwt-decode`.
-            console.log("One Tap Success", credentialResponse);
-            // Note: In real app, verify `credentialResponse.credential` on backend.
-            // Here we can't easily get the profile info without decoding.
-            // I'll skip the logic here to avoid adding 'jwt-decode' dependency unless necessary, 
-            // but user wants it.
-            // Let's assume the user uses the main button for now, or I add jwt-decode.
-            // Plan B: Just log it for now.
-
-            // To make it actually work:
-            // 1. `npm install jwt-decode`
-            // 2. Decode credentialResponse.credential -> get email, name, picture
-            // 3. call login(decoded)
+        onSuccess: (credentialResponse) => {
+            if (credentialResponse.credential) {
+                try {
+                    const decoded = jwtDecode(credentialResponse.credential);
+                    console.log("One Tap Success", decoded);
+                    login(decoded);
+                } catch (error) {
+                    console.error("Token decoding failed", error);
+                }
+            }
         },
         onError: () => console.log('One Tap Login Failed'),
         disabled: !!user, // Disable if already logged in
