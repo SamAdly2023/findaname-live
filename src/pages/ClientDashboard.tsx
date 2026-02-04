@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { 
-    LayoutDashboard, 
-    Search, 
-    BookOpen, 
-    Settings as SettingsIcon, 
+import {
+    LayoutDashboard,
+    Search,
+    BookOpen,
+    Settings as SettingsIcon,
     LogOut,
     Menu,
     X,
@@ -140,9 +140,9 @@ const Settings: React.FC = () => {
 
     return (
         <div className="space-y-6 animate-fade-in">
-             <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
                 <h2 className="text-2xl font-bold mb-6">Account Settings</h2>
-                
+
                 <div className="space-y-6">
                     <div className="flex items-center gap-4">
                         <img src={user.picture} alt={user.name} className="w-20 h-20 rounded-full border-2 border-indigo-500" />
@@ -164,14 +164,14 @@ const Settings: React.FC = () => {
                             </div>
                             <div className="bg-gray-900 p-4 rounded-lg">
                                 <p className="text-gray-400 text-sm">Member Since</p>
-                                <p className="font-medium text-white">{new Date().toLocaleDateString()}</p> 
+                                <p className="font-medium text-white">{new Date().toLocaleDateString()}</p>
                                 {/* In a real app, user object would have createdAt */}
                             </div>
                         </div>
                     </div>
 
                     <div className="border-t border-gray-700 pt-6">
-                        <button 
+                        <button
                             onClick={logout}
                             className="bg-red-900/50 hover:bg-red-900 text-red-200 px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
                         >
@@ -214,7 +214,7 @@ export default function ClientDashboard() {
         <div className="min-h-screen bg-gray-900 text-white flex">
             {/* Mobile Menu Overlay */}
             {isMobileMenuOpen && (
-                <div 
+                <div
                     className="fixed inset-0 bg-black/50 z-40 md:hidden"
                     onClick={() => setIsMobileMenuOpen(false)}
                 />
@@ -248,8 +248,8 @@ export default function ClientDashboard() {
                                 }}
                                 className={`
                                     w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors
-                                    ${isActive 
-                                        ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30' 
+                                    ${isActive
+                                        ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30'
                                         : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
                                     }
                                 `}
