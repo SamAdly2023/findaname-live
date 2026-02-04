@@ -1,12 +1,28 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useGoogleLogin } from '@react-oauth/google';
 import { User, LogOut, Settings, LayoutDashboard } from 'lucide-react';
 import logo from '../assets/Find-a-name-logo.png';
 
 export default function Navbar() {
-    const { user, logout, isAdmin } = useAuth();
+    const { user, logout, isAdmin, login } = useAuth();
     const navigate = useNavigate();
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+                const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+                });
+                const userInfo = await userInfoResponse.json();
+                login(userInfo);
+                navigate('/dashboard');
+            } catch (err) {
+                console.error("Login failed", err);
+            }
+        },
+    });
 
     return (
         <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50 backdrop-blur-md bg-opacity-80">
@@ -52,12 +68,12 @@ export default function Navbar() {
                                 </button>
                             </div>
                         ) : (
-                            <Link
-                                to="/"
+                            <button
+                                onClick={() => googleLogin()}
                                 className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-5 py-2 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
                             >
                                 Start Now for Free
-                            </Link>
+                            </button>
                         )}
                     </div>
                 </div>
