@@ -17,6 +17,9 @@ import {
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { Link } from 'react-router-dom';
 import { DomainGeneratorTool } from '../components/DomainGeneratorTool';
+import { DomainValueCalculator } from '../components/DomainValueCalculator';
+import { WhoisLookupTool } from '../components/WhoisLookupTool';
+import { DnsLookupTool } from '../components/DnsLookupTool';
 import UserGuide from './UserGuide'; // Importing UserGuide component
 
 // --- Dashboard Home Component ---
@@ -188,7 +191,7 @@ const Settings: React.FC = () => {
 // --- Main Client Dashboard with Sidebar ---
 export default function ClientDashboard() {
     const { user, logout } = useAuth();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'generator' | 'guide' | 'settings'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'generator' | 'valuation' | 'whois' | 'dns' | 'guide' | 'settings'>('dashboard');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     if (!user) return <div className="p-10 text-center text-white">Please log in to view dashboard.</div>;
@@ -196,6 +199,9 @@ export default function ClientDashboard() {
     const navItems = [
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { id: 'generator', label: 'Domain Generator', icon: Search },
+        { id: 'valuation', label: 'Value Calculator', icon: Crown },
+        { id: 'whois', label: 'WHOIS Lookup', icon: Search },
+        { id: 'dns', label: 'DNS Lookup', icon: Search },
         { id: 'guide', label: 'User Guide', icon: BookOpen },
         { id: 'settings', label: 'Settings', icon: SettingsIcon },
     ];
@@ -204,6 +210,9 @@ export default function ClientDashboard() {
         switch (activeTab) {
             case 'dashboard': return <DashboardHome />;
             case 'generator': return <DomainGeneratorTool />;
+            case 'valuation': return <DomainValueCalculator />;
+            case 'whois': return <WhoisLookupTool />;
+            case 'dns': return <DnsLookupTool />;
             case 'guide': return <div className="bg-gray-800 rounded-xl p-6 border border-gray-700"><UserGuide /></div>;
             case 'settings': return <Settings />;
             default: return <DashboardHome />;

@@ -47,9 +47,12 @@ export default function Navbar() {
                                 </button>
                             </div>
                         ) : (
-                            <div className="text-sm text-gray-500">
-                                Sign in to access tools
-                            </div>
+                            <Link
+                                to="/"
+                                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-5 py-2 rounded-full font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+                            >
+                                Start Now for Free
+                            </Link>
                         )}
                     </div>
                 </div>
