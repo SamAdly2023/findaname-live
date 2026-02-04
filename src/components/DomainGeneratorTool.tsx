@@ -172,14 +172,14 @@ export const DomainGeneratorTool: React.FC = () => {
                     ))}
                 </div>
 
-                <WhoisModal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    domain={selectedDomain?.name || ''}
-                    data={whoisData}
-                    isLoading={isLoadingWhois}
-                    error={whoisError}
-                />
+                {isModalOpen && (
+                    <WhoisModal
+                        domainName={selectedDomain?.name || ''}
+                        whoisData={whoisData}
+                        isLoading={isLoadingWhois}
+                        onClose={() => setIsModalOpen(false)}
+                    />
+                )}
 
             </div>
         </div>
