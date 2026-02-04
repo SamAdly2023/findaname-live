@@ -1,14 +1,303 @@
 import React, { useState } from 'react';
-import { useAuth, PlanType } from '../context/AuthContext';
+import { useAuth, PlanType, User } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import {
     Shield, Users, Eye, TrendingUp, DollarSign,
     Activity, UserPlus, Search, Zap, Gift, Crown, Trash2,
     Copy, CheckCircle, AlertTriangle, BarChart3,
-    Link, Award, LogOut, Settings
+    Link, Award, LogOut, Settings, X, Clock, Calendar,
+    ChevronRight, Edit3, Save, History, Globe, Database
 } from 'lucide-react';
 
 type AdminTab = 'overview' | 'users' | 'affiliates' | 'analytics' | 'settings';
+
+// User Detail Modal Component
+const UserDetailModal: React.FC<{
+    selectedUser: User | null;
+    onClose: () => void;
+    onPlanChange: (userId: string, plan: PlanType) => void;
+    onCreditsChange: (userId: string, credits: number) => void;
+    currentAdminId?: string;
+}> = ({ selectedUser, onClose, onPlanChange, onCreditsChange, currentAdminId }) => {
+    const [editingCredits, setEditingCredits] = useState(false);
+    const [creditsValue, setCreditsValue] = useState(selectedUser?.credits || 0);
+    const [editingPlan, setEditingPlan] = useState(false);
+
+    if (!selectedUser) return null;
+
+    const handleSaveCredits = () => {
+        onCreditsChange(selectedUser.id, creditsValue);
+        setEditingCredits(false);
+    };
+
+    const searches = selectedUser.searches || [];
+    const isPro = selectedUser.plan === 'pro';
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <div
+                className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+                onClick={onClose}
+            />
+
+            {/* Modal */}
+            <div className="relative w-full max-w-4xl max-h-[90vh] bg-gray-800 rounded-2xl border border-gray-700 shadow-2xl overflow-hidden flex flex-col">
+                {/* Header */}
+                <div className="bg-gradient-to-r from-purple-600/20 to-indigo-600/20 border-b border-gray-700 p-6">
+                    <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-4">
+                            <img
+                                src={selectedUser.picture}
+                                alt={selectedUser.name}
+                                className="w-16 h-16 rounded-full ring-4 ring-purple-500/30"
+                            />
+                            <div>
+                                <h2 className="text-2xl font-bold flex items-center gap-2">
+                                    {selectedUser.name}
+                                    {selectedUser.role === 'admin' && (
+                                        <span className="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-xs rounded-full font-medium">
+                                            ADMIN
+                                        </span>
+                                    )}
+                                </h2>
+                                <p className="text-gray-400">{selectedUser.email}</p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                    ID: {selectedUser.id}
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={onClose}
+                            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+                        >
+                            <X size={24} className="text-gray-400" />
+                        </button>
+                    </div>
+                </div>
+
+                {/* Content - Scrollable */}
+                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {/* Plan */}
+                        <div className="bg-gray-700/50 p-4 rounded-xl border border-gray-600">
+                            <div className="flex items-center justify-between mb-2">
+                                <p className="text-xs text-gray-400 uppercase tracking-wide">Plan</p>
+                                {currentAdminId !== selectedUser.id && (
+                                    <button
+                                        onClick={() => setEditingPlan(!editingPlan)}
+                                        className="p-1 hover:bg-gray-600 rounded"
+                                    >
+                                        <Edit3 size={12} className="text-gray-400" />
+                                    </button>
+                                )}
+                            </div>
+                            {editingPlan && currentAdminId !== selectedUser.id ? (
+                                <select
+                                    value={selectedUser.plan}
+                                    onChange={(e) => {
+                                        onPlanChange(selectedUser.id, e.target.value as PlanType);
+                                        setEditingPlan(false);
+                                    }}
+                                    className="w-full px-2 py-1 bg-gray-600 border border-gray-500 rounded text-sm"
+                                >
+                                    <option value="free">Free</option>
+                                    <option value="pro">Pro</option>
+                                </select>
+                            ) : (
+                                <div className="flex items-center gap-2">
+                                    {isPro ? <Crown size={18} className="text-yellow-400" /> : <Zap size={18} className="text-gray-400" />}
+                                    <span className={`font-bold text-lg ${isPro ? 'text-green-400' : 'text-gray-300'}`}>
+                                        {selectedUser.plan.toUpperCase()}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Credits */}
+                        <div className="bg-gray-700/50 p-4 rounded-xl border border-gray-600">
+                            <div className="flex items-center justify-between mb-2">
+                                <p className="text-xs text-gray-400 uppercase tracking-wide">Credits</p>
+                                {!isPro && (
+                                    <button
+                                        onClick={() => {
+                                            if (editingCredits) {
+                                                handleSaveCredits();
+                                            } else {
+                                                setCreditsValue(selectedUser.credits);
+                                                setEditingCredits(true);
+                                            }
+                                        }}
+                                        className="p-1 hover:bg-gray-600 rounded"
+                                    >
+                                        {editingCredits ? <Save size={12} className="text-green-400" /> : <Edit3 size={12} className="text-gray-400" />}
+                                    </button>
+                                )}
+                            </div>
+                            {editingCredits && !isPro ? (
+                                <input
+                                    type="number"
+                                    value={creditsValue}
+                                    onChange={(e) => setCreditsValue(parseInt(e.target.value) || 0)}
+                                    className="w-full px-2 py-1 bg-gray-600 border border-gray-500 rounded text-lg font-bold"
+                                    min="0"
+                                    autoFocus
+                                />
+                            ) : (
+                                <p className="text-2xl font-bold text-yellow-400">
+                                    {isPro ? '∞' : selectedUser.credits}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Total Searches */}
+                        <div className="bg-gray-700/50 p-4 rounded-xl border border-gray-600">
+                            <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Total Searches</p>
+                            <p className="text-2xl font-bold text-blue-400">{searches.length}</p>
+                        </div>
+
+                        {/* Referrals */}
+                        <div className="bg-gray-700/50 p-4 rounded-xl border border-gray-600">
+                            <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Referrals</p>
+                            <p className="text-2xl font-bold text-purple-400">
+                                {selectedUser.affiliateStats?.totalReferrals || 0}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* User Details */}
+                    <div className="bg-gray-700/30 p-4 rounded-xl border border-gray-600">
+                        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4 flex items-center gap-2">
+                            <Database size={16} />
+                            User Information
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                                <Calendar size={18} className="text-gray-500" />
+                                <div>
+                                    <p className="text-xs text-gray-500">Joined</p>
+                                    <p className="font-medium">{new Date(selectedUser.joinedAt || selectedUser.lastResetDate).toLocaleDateString('en-US', {
+                                        year: 'numeric', month: 'long', day: 'numeric'
+                                    })}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                                <Clock size={18} className="text-gray-500" />
+                                <div>
+                                    <p className="text-xs text-gray-500">Last Credit Reset</p>
+                                    <p className="font-medium">{new Date(selectedUser.lastResetDate).toLocaleDateString('en-US', {
+                                        year: 'numeric', month: 'long', day: 'numeric'
+                                    })}</p>
+                                </div>
+                            </div>
+                            {selectedUser.referredBy && (
+                                <div className="flex items-center gap-3 p-3 bg-purple-500/10 rounded-lg border border-purple-500/30">
+                                    <Gift size={18} className="text-purple-400" />
+                                    <div>
+                                        <p className="text-xs text-purple-400">Referred By</p>
+                                        <p className="font-medium text-purple-300">{selectedUser.referredBy}</p>
+                                    </div>
+                                </div>
+                            )}
+                            {selectedUser.affiliateStats?.referralCode && (
+                                <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                                    <Link size={18} className="text-gray-500" />
+                                    <div>
+                                        <p className="text-xs text-gray-500">Referral Code</p>
+                                        <code className="font-medium text-green-400">{selectedUser.affiliateStats.referralCode}</code>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Search Activity */}
+                    <div className="bg-gray-700/30 p-4 rounded-xl border border-gray-600">
+                        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4 flex items-center gap-2">
+                            <History size={16} />
+                            Search Activity ({searches.length} total)
+                        </h3>
+
+                        {searches.length > 0 ? (
+                            <div className="space-y-2 max-h-64 overflow-y-auto">
+                                {searches.map((search, index) => (
+                                    <div
+                                        key={search.id || index}
+                                        className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
+                                                <Search size={14} className="text-indigo-400" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-white">{search.term}</p>
+                                                <p className="text-xs text-gray-500">{search.tool}</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-xs text-gray-400">
+                                                {new Date(search.date).toLocaleDateString('en-US', {
+                                                    month: 'short', day: 'numeric', year: 'numeric'
+                                                })}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                {new Date(search.date).toLocaleTimeString('en-US', {
+                                                    hour: '2-digit', minute: '2-digit'
+                                                })}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8 text-gray-500">
+                                <Search size={32} className="mx-auto mb-2 opacity-50" />
+                                <p>No search activity recorded</p>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Affiliate Stats */}
+                    {selectedUser.affiliateStats && (selectedUser.affiliateStats.totalReferrals > 0 || selectedUser.affiliateStats.creditsEarned > 0) && (
+                        <div className="bg-gradient-to-r from-purple-500/10 to-indigo-500/10 p-4 rounded-xl border border-purple-500/30">
+                            <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-4 flex items-center gap-2">
+                                <Award size={16} />
+                                Affiliate Performance
+                            </h3>
+                            <div className="grid grid-cols-3 gap-4">
+                                <div className="text-center p-3 bg-gray-800/50 rounded-lg">
+                                    <p className="text-2xl font-bold text-green-400">{selectedUser.affiliateStats.totalReferrals}</p>
+                                    <p className="text-xs text-gray-400">Total Referrals</p>
+                                </div>
+                                <div className="text-center p-3 bg-gray-800/50 rounded-lg">
+                                    <p className="text-2xl font-bold text-yellow-400">{selectedUser.affiliateStats.creditsEarned}</p>
+                                    <p className="text-xs text-gray-400">Credits Earned</p>
+                                </div>
+                                <div className="text-center p-3 bg-gray-800/50 rounded-lg">
+                                    <p className="text-2xl font-bold text-purple-400">{selectedUser.affiliateStats.referredUsers?.length || 0}</p>
+                                    <p className="text-xs text-gray-400">Active Referrals</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* Footer Actions */}
+                <div className="border-t border-gray-700 p-4 bg-gray-800/50">
+                    <div className="flex justify-end gap-3">
+                        <button
+                            onClick={onClose}
+                            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default function AdminDashboard() {
     const {
@@ -19,6 +308,7 @@ export default function AdminDashboard() {
     const [activeTab, setActiveTab] = useState<AdminTab>('overview');
     const [searchQuery, setSearchQuery] = useState('');
     const [copiedCode, setCopiedCode] = useState<string | null>(null);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
     const users = getAllUsers();
     const analytics = getAnalytics();
@@ -182,11 +472,18 @@ export default function AdminDashboard() {
                 </h3>
                 <div className="space-y-3">
                     {users.slice(0, 5).map(u => (
-                        <div key={u.id} className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg">
+                        <div
+                            key={u.id}
+                            className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                            onClick={() => setSelectedUser(u)}
+                        >
                             <div className="flex items-center gap-3">
                                 <img src={u.picture} alt={u.name} className="w-10 h-10 rounded-full" />
                                 <div>
-                                    <p className="font-medium">{u.name}</p>
+                                    <p className="font-medium flex items-center gap-1">
+                                        {u.name}
+                                        <ChevronRight size={14} className="text-gray-500" />
+                                    </p>
                                     <p className="text-xs text-gray-400">{u.email}</p>
                                 </div>
                             </div>
@@ -250,7 +547,11 @@ export default function AdminDashboard() {
                         </thead>
                         <tbody>
                             {filteredUsers.map(u => (
-                                <tr key={u.id} className="border-t border-gray-700/50 hover:bg-gray-700/30 transition-colors">
+                                <tr
+                                    key={u.id}
+                                    className="border-t border-gray-700/50 hover:bg-gray-700/30 transition-colors cursor-pointer"
+                                    onClick={() => setSelectedUser(u)}
+                                >
                                     <td className="p-4">
                                         <div className="flex items-center gap-3">
                                             <img src={u.picture} alt={u.name} className="w-10 h-10 rounded-full ring-2 ring-gray-700" />
@@ -258,18 +559,19 @@ export default function AdminDashboard() {
                                                 <p className="font-medium flex items-center gap-2">
                                                     {u.name}
                                                     {u.role === 'admin' && <Shield size={14} className="text-purple-400" />}
+                                                    <ChevronRight size={14} className="text-gray-500" />
                                                 </p>
                                                 <p className="text-xs text-gray-400">{u.email}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="p-4">
+                                    <td className="p-4" onClick={(e) => e.stopPropagation()}>
                                         <select
                                             value={u.plan}
                                             onChange={(e) => handlePlanChange(u.id, e.target.value as PlanType)}
                                             className={`appearance-none px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer focus:ring-2 focus:ring-purple-500 ${u.plan === 'pro'
-                                                    ? 'bg-green-500/20 text-green-400 border-green-500/30'
-                                                    : 'bg-gray-700 text-gray-300 border-gray-600'
+                                                ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                                                : 'bg-gray-700 text-gray-300 border-gray-600'
                                                 } border`}
                                             disabled={u.id === user?.id}
                                         >
@@ -277,7 +579,7 @@ export default function AdminDashboard() {
                                             <option value="pro">Pro</option>
                                         </select>
                                     </td>
-                                    <td className="p-4">
+                                    <td className="p-4" onClick={(e) => e.stopPropagation()}>
                                         <div className="flex items-center gap-2">
                                             <input
                                                 type="number"
@@ -298,8 +600,15 @@ export default function AdminDashboard() {
                                     <td className="p-4 text-sm text-gray-400">
                                         {new Date(u.joinedAt || u.lastResetDate).toLocaleDateString()}
                                     </td>
-                                    <td className="p-4">
+                                    <td className="p-4" onClick={(e) => e.stopPropagation()}>
                                         <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={() => setSelectedUser(u)}
+                                                className="p-2 hover:bg-indigo-500/20 rounded-lg transition-colors text-indigo-400"
+                                                title="View user details"
+                                            >
+                                                <Eye size={16} />
+                                            </button>
                                             {u.affiliateStats?.referralCode && (
                                                 <button
                                                     onClick={() => copyToClipboard(u.affiliateStats!.referralLink, u.id)}
@@ -378,9 +687,9 @@ export default function AdminDashboard() {
                     <div className="space-y-3">
                         {leaderboard.map((entry, i) => (
                             <div key={entry.userId} className={`flex items-center justify-between p-4 rounded-lg ${i === 0 ? 'bg-gradient-to-r from-yellow-500/20 to-transparent border border-yellow-500/30' :
-                                    i === 1 ? 'bg-gradient-to-r from-gray-400/20 to-transparent border border-gray-400/30' :
-                                        i === 2 ? 'bg-gradient-to-r from-amber-700/20 to-transparent border border-amber-700/30' :
-                                            'bg-gray-700/50'
+                                i === 1 ? 'bg-gradient-to-r from-gray-400/20 to-transparent border border-gray-400/30' :
+                                    i === 2 ? 'bg-gradient-to-r from-amber-700/20 to-transparent border border-amber-700/30' :
+                                        'bg-gray-700/50'
                                 }`}>
                                 <div className="flex items-center gap-4">
                                     <span className={`text-2xl font-bold w-8 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-300' : i === 2 ? 'text-amber-600' : 'text-gray-500'
@@ -656,8 +965,8 @@ export default function AdminDashboard() {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-all ${activeTab === tab.id
-                                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/25'
-                                    : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                                ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/25'
+                                : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
                                 }`}
                         >
                             {tab.icon}
@@ -669,6 +978,17 @@ export default function AdminDashboard() {
                 {/* Content */}
                 {renderContent()}
             </div>
+
+            {/* User Detail Modal */}
+            {selectedUser && (
+                <UserDetailModal
+                    selectedUser={selectedUser}
+                    onClose={() => setSelectedUser(null)}
+                    onPlanChange={handlePlanChange}
+                    onCreditsChange={handleCreditsChange}
+                    currentAdminId={user?.id}
+                />
+            )}
         </div>
     );
 }

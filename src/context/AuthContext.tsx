@@ -5,7 +5,7 @@ import { googleLogout } from '@react-oauth/google';
 export type UserRole = 'user' | 'admin';
 export type PlanType = 'free' | 'pro';
 
-interface AffiliateStats {
+export interface AffiliateStats {
     referralCode: string;
     referralLink: string;
     totalReferrals: number;
@@ -14,7 +14,14 @@ interface AffiliateStats {
     referredUsers: string[]; // User IDs
 }
 
-interface User {
+export interface SearchRecord {
+    id: string;
+    term: string;
+    tool: string;
+    date: string;
+}
+
+export interface User {
     id: string;
     email: string;
     name: string;
@@ -28,13 +35,6 @@ interface User {
     affiliateStats: AffiliateStats;
     referredBy?: string; // User ID of referrer
     joinedAt: string;
-}
-
-interface SearchRecord {
-    id: string;
-    term: string;
-    tool: string;
-    date: string;
 }
 
 interface AuthContextType {
