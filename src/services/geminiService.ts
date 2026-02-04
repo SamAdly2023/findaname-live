@@ -124,7 +124,7 @@ export const checkAvailability = async (domainName: string): Promise<DomainStatu
  */
 export const getWhoisInfo = async (domainName: string): Promise<WhoisData> => {
   if (!WHOISXML_API_KEY || WHOISXML_API_KEY === 'your_whois_api_key_here') {
-      return { error: "Configuration Error: VITE_WHOIS_API_KEY is missing or invalid. Please add your WhoisXMLAPI key to your environment variables." };
+    return { error: "Configuration Error: VITE_WHOIS_API_KEY is missing or invalid. Please add your WhoisXMLAPI key to your environment variables." };
   }
 
   const apiUrl = `https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=${WHOISXML_API_KEY}&domainName=${domainName}&outputFormat=JSON`;
