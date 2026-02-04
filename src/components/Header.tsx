@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MenuIcon, CloseIcon, GlobeIcon } from './icons/Icons';
+import logo from '../assets/Find-a-name-logo.png';
 
 // Define google translate type on window
 declare global {
@@ -88,7 +89,7 @@ export const Header: React.FC = () => {
         <div className="container mx-auto flex justify-between items-center">
           <a href="/" className="flex items-center gap-2 flex-shrink-0 z-50">
             <div className="bg-white p-2 rounded-xl shadow-lg">
-              <img src="/Find-a-name-logo.png" alt="FindAName.live Logo" className="h-12 w-auto" />
+              <img src={logo} alt="FindAName.live Logo" className="h-12 w-auto" />
             </div>
           </a>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { User, LogOut, Settings, LayoutDashboard } from 'lucide-react';
+import logo from '../assets/Find-a-name-logo.png';
 
 export default function Navbar() {
     const { user, logout, isAdmin } = useAuth();
@@ -15,7 +16,7 @@ export default function Navbar() {
                         <Link to="/" className="flex-shrink-0">
                             <div className="bg-white p-1 rounded-lg">
                                 <img
-                                    src="/Find-a-name-logo.png"
+                                    src={logo}
                                     alt="FindAName"
                                     className="h-8 w-auto"
                                 />
