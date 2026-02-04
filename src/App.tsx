@@ -283,7 +283,7 @@ const DashboardDispatcher = () => {
 
 function App() {
     // NOTE: Replace this Client ID with the one you provide later
-    const GOOGLE_CLIENT_ID = "Please-Replace-With-Your-Google-Client-ID";
+    const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "Please-Replace-With-Your-Google-Client-ID";
 
     return (
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
