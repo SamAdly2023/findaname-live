@@ -29,6 +29,8 @@ import { DomainGeneratorTool } from '../components/DomainGeneratorTool';
 import { DomainValueCalculator } from '../components/DomainValueCalculator';
 import { WhoisLookupTool } from '../components/WhoisLookupTool';
 import { DnsLookupTool } from '../components/DnsLookupTool';
+import { SeoScoreTool } from '../components/SeoScoreTool';
+import { AuthorityScoreTool } from '../components/AuthorityScoreTool';
 import UserGuide from './UserGuide';
 
 // --- Dashboard Home Component ---
@@ -342,8 +344,8 @@ const AffiliateTab: React.FC = () => {
                         <button
                             onClick={() => copyToClipboard(affiliateLink, 'link')}
                             className={`px-4 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${copiedLink
-                                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                                    : 'bg-purple-600 hover:bg-purple-500 text-white'
+                                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                                : 'bg-purple-600 hover:bg-purple-500 text-white'
                                 }`}
                         >
                             {copiedLink ? <CheckCircle size={18} /> : <Copy size={18} />}
@@ -358,8 +360,8 @@ const AffiliateTab: React.FC = () => {
                         <button
                             onClick={() => copyToClipboard(affiliateCode, 'code')}
                             className={`px-4 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${copiedCode
-                                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                                    : 'bg-gray-700 hover:bg-gray-600 text-white'
+                                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                                : 'bg-gray-700 hover:bg-gray-600 text-white'
                                 }`}
                         >
                             {copiedCode ? <CheckCircle size={18} /> : <Copy size={18} />}
@@ -379,7 +381,7 @@ const AffiliateTab: React.FC = () => {
                     <div className="space-y-3">
                         {leaderboard.slice(0, 5).map((entry, i) => (
                             <div key={entry.userId} className={`flex items-center justify-between p-4 rounded-lg ${i === 0 ? 'bg-gradient-to-r from-yellow-500/10 to-transparent border border-yellow-500/20' :
-                                    'bg-gray-700/30'
+                                'bg-gray-700/30'
                                 }`}>
                                 <div className="flex items-center gap-4">
                                     <span className={`text-xl font-bold w-6 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-300' : i === 2 ? 'text-amber-600' : 'text-gray-500'
@@ -520,7 +522,7 @@ const Settings: React.FC = () => {
 // --- Main Client Dashboard with Sidebar ---
 export default function ClientDashboard() {
     const { user, logout, getAffiliateLeaderboard } = useAuth();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'generator' | 'valuation' | 'whois' | 'dns' | 'affiliate' | 'guide' | 'settings'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'generator' | 'valuation' | 'whois' | 'dns' | 'seo' | 'authority' | 'affiliate' | 'guide' | 'settings'>('dashboard');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     if (!user) return <div className="p-10 text-center text-white">Please log in to view dashboard.</div>;
@@ -531,6 +533,8 @@ export default function ClientDashboard() {
         { id: 'valuation', label: 'Value Calculator', icon: Crown },
         { id: 'whois', label: 'WHOIS Lookup', icon: Search },
         { id: 'dns', label: 'DNS Lookup', icon: Search },
+        { id: 'seo', label: 'SEO Score', icon: TrendingUp },
+        { id: 'authority', label: 'Authority Score', icon: Award },
         { id: 'affiliate', label: 'Affiliate', icon: Gift, badge: user.affiliateStats?.totalReferrals },
         { id: 'guide', label: 'User Guide', icon: BookOpen },
         { id: 'settings', label: 'Settings', icon: SettingsIcon },
@@ -543,6 +547,8 @@ export default function ClientDashboard() {
             case 'valuation': return <DomainValueCalculator />;
             case 'whois': return <WhoisLookupTool />;
             case 'dns': return <DnsLookupTool />;
+            case 'seo': return <SeoScoreTool />;
+            case 'authority': return <AuthorityScoreTool />;
             case 'affiliate': return <AffiliateTab />;
             case 'guide': return <div className="bg-gray-800 rounded-xl p-6 border border-gray-700"><UserGuide /></div>;
             case 'settings': return <Settings />;
