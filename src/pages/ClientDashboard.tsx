@@ -21,7 +21,16 @@ import {
     Award,
     TrendingUp,
     Sparkles,
-    ExternalLink
+    ExternalLink,
+    Shield,
+    FileText,
+    Link2,
+    Mail,
+    AtSign,
+    Layers,
+    Bot,
+    Server,
+    Database
 } from 'lucide-react';
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { Link } from 'react-router-dom';
@@ -31,6 +40,15 @@ import { WhoisLookupTool } from '../components/WhoisLookupTool';
 import { DnsLookupTool } from '../components/DnsLookupTool';
 import { SeoScoreTool } from '../components/SeoScoreTool';
 import { AuthorityScoreTool } from '../components/AuthorityScoreTool';
+import { SslCheckerTool } from '../components/SslCheckerTool';
+import { MetaAnalyzerTool } from '../components/MetaAnalyzerTool';
+import { RedirectCheckerTool } from '../components/RedirectCheckerTool';
+import { EmailCheckerTool } from '../components/EmailCheckerTool';
+import { SocialCheckerTool } from '../components/SocialCheckerTool';
+import { TechStackTool } from '../components/TechStackTool';
+import { RobotsTool } from '../components/RobotsTool';
+import { HostingLookupTool } from '../components/HostingLookupTool';
+import { NameserverLookupTool } from '../components/NameserverLookupTool';
 import UserGuide from './UserGuide';
 
 // --- Dashboard Home Component ---
@@ -522,7 +540,7 @@ const Settings: React.FC = () => {
 // --- Main Client Dashboard with Sidebar ---
 export default function ClientDashboard() {
     const { user, logout, getAffiliateLeaderboard } = useAuth();
-    const [activeTab, setActiveTab] = useState<'dashboard' | 'generator' | 'valuation' | 'whois' | 'dns' | 'seo' | 'authority' | 'affiliate' | 'guide' | 'settings'>('dashboard');
+    const [activeTab, setActiveTab] = useState<'dashboard' | 'generator' | 'valuation' | 'whois' | 'dns' | 'seo' | 'authority' | 'ssl' | 'meta' | 'redirect' | 'email' | 'social' | 'techstack' | 'robots' | 'hosting' | 'nameserver' | 'affiliate' | 'guide' | 'settings'>('dashboard');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     if (!user) return <div className="p-10 text-center text-white">Please log in to view dashboard.</div>;
@@ -532,9 +550,18 @@ export default function ClientDashboard() {
         { id: 'generator', label: 'Domain Generator', icon: Search },
         { id: 'valuation', label: 'Value Calculator', icon: Crown },
         { id: 'whois', label: 'WHOIS Lookup', icon: Search },
-        { id: 'dns', label: 'DNS Lookup', icon: Search },
+        { id: 'dns', label: 'DNS Lookup', icon: Database },
         { id: 'seo', label: 'SEO Score', icon: TrendingUp },
         { id: 'authority', label: 'Authority Score', icon: Award },
+        { id: 'ssl', label: 'SSL Checker', icon: Shield },
+        { id: 'meta', label: 'Meta Analyzer', icon: FileText },
+        { id: 'redirect', label: 'Redirect Checker', icon: Link2 },
+        { id: 'email', label: 'Email Checker', icon: Mail },
+        { id: 'social', label: 'Social Checker', icon: AtSign },
+        { id: 'techstack', label: 'Tech Stack', icon: Layers },
+        { id: 'robots', label: 'Robots.txt', icon: Bot },
+        { id: 'hosting', label: 'Hosting Lookup', icon: Server },
+        { id: 'nameserver', label: 'Nameserver Lookup', icon: Database },
         { id: 'affiliate', label: 'Affiliate', icon: Gift, badge: user.affiliateStats?.totalReferrals },
         { id: 'guide', label: 'User Guide', icon: BookOpen },
         { id: 'settings', label: 'Settings', icon: SettingsIcon },
@@ -549,6 +576,15 @@ export default function ClientDashboard() {
             case 'dns': return <DnsLookupTool />;
             case 'seo': return <SeoScoreTool />;
             case 'authority': return <AuthorityScoreTool />;
+            case 'ssl': return <SslCheckerTool />;
+            case 'meta': return <MetaAnalyzerTool />;
+            case 'redirect': return <RedirectCheckerTool />;
+            case 'email': return <EmailCheckerTool />;
+            case 'social': return <SocialCheckerTool />;
+            case 'techstack': return <TechStackTool />;
+            case 'robots': return <RobotsTool />;
+            case 'hosting': return <HostingLookupTool />;
+            case 'nameserver': return <NameserverLookupTool />;
             case 'affiliate': return <AffiliateTab />;
             case 'guide': return <div className="bg-gray-800 rounded-xl p-6 border border-gray-700"><UserGuide /></div>;
             case 'settings': return <Settings />;
