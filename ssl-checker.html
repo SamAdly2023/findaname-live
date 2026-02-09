@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="Find-a-name-logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <title>Free SSL Certificate Checker - Verify SSL Security Instantly</title>
+    <meta name="description"
+        content="Check SSL certificate validity, expiration date, issuer, and security grade for any website. Free SSL checker tool to verify HTTPS security." />
+    <meta name="keywords"
+        content="ssl checker, ssl certificate checker, https checker, ssl validator, certificate expiry, ssl security" />
+    <link rel="canonical" href="https://findaname.live/ssl-checker.html" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://findaname.live/ssl-checker.html">
+    <meta property="og:title" content="Free SSL Certificate Checker - Verify SSL Security Instantly">
+    <meta property="og:description"
+        content="Check SSL certificate validity, expiration date, issuer, and security grade for any website.">
+    <meta property="og:image" content="Find-a-name-logo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://findaname.live/ssl-checker.html">
+    <meta property="twitter:title" content="Free SSL Certificate Checker - Verify SSL Security Instantly">
+    <meta property="twitter:description"
+        content="Check SSL certificate validity, expiration date, issuer, and security grade for any website.">
+    <meta property="twitter:image" content="Find-a-name-logo.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google AdSense -->
+    <meta name="google-adsense-account" content="ca-pub-8050638035807727">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8050638035807727"
+        crossorigin="anonymous"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "SSL Certificate Checker Tool",
+      "url": "https://findaname.live/ssl-checker.html",
+      "description": "A free online tool to check SSL certificate validity and security for any website.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "FindAName.live",
+        "url": "https://findaname.live/"
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gradient-to-br from-[#0a1024] to-[#0d183a] text-white font-sans">
+    <header class="py-6 px-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2 flex-shrink-0 z-50">
+                <div class="bg-white p-2 rounded-xl shadow-lg">
+                    <img src="Find-a-name-logo.png" alt="FindAName.live Logo" class="h-12 w-auto" />
+                </div>
+            </a>
+            <nav class="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-x-6 lg:gap-x-8">
+                <a href="/dns-lookup.html" class="text-blue-200/80 hover:text-white transition-colors font-medium">DNS
+                    Lookup</a>
+                <a href="/whois-lookup.html"
+                    class="text-blue-200/80 hover:text-white transition-colors font-medium">WHOIS</a>
+                <a href="/seo-checker.html" class="text-blue-200/80 hover:text-white transition-colors font-medium">SEO
+                    Checker</a>
+                <a href="/ssl-checker.html" class="text-white transition-colors font-medium">SSL Checker</a>
+                <a href="/domain-value-calculator.html"
+                    class="text-blue-200/80 hover:text-white transition-colors font-medium">Domain Value</a>
+            </nav>
+
+            <div class="flex items-center gap-2 z-50">
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" aria-label="Toggle menu" class="p-2">
+                        <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-white">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                        <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-white hidden">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-gradient-to-br from-[#0a1024] to-[#0d183a] z-40 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+        <nav class="flex flex-col items-center justify-center h-full gap-y-8 text-2xl">
+            <a href="/dns-lookup.html" class="text-blue-200/80 hover:text-white transition-colors font-medium">DNS
+                Lookup</a>
+            <a href="/whois-lookup.html"
+                class="text-blue-200/80 hover:text-white transition-colors font-medium">WHOIS</a>
+            <a href="/seo-checker.html" class="text-blue-200/80 hover:text-white transition-colors font-medium">SEO
+                Checker</a>
+            <a href="/ssl-checker.html" class="text-white transition-colors font-medium">SSL Checker</a>
+            <a href="/domain-value-calculator.html"
+                class="text-blue-200/80 hover:text-white transition-colors font-medium">Domain Value</a>
+        </nav>
+    </div>
+
+    <main class="container mx-auto px-4 py-8 md:py-12 text-blue-100/80">
+        <div
+            class="max-w-3xl mx-auto text-center bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-lg p-8">
+            <h1
+                class="text-4xl font-extrabold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-teal-300">
+                SSL Certificate Checker</h1>
+            <p class="text-lg md:text-xl text-blue-100/80 mb-8">Verify SSL certificate validity and security for any
+                website.</p>
+
+            <form id="ssl-checker-form" class="max-w-xl mx-auto mb-8">
+                <div class="relative">
+                    <input type="text" placeholder="Enter a domain (e.g., google.com)"
+                        class="w-full pl-5 pr-32 py-4 text-lg bg-white/10 border border-white/20 rounded-full focus:ring-2 focus:ring-green-400 focus:outline-none backdrop-blur-sm transition-all duration-300"
+                        required aria-label="Domain for SSL check" />
+                    <button type="submit"
+                        class="absolute inset-y-0 right-0 m-1.5 px-6 py-2.5 bg-green-600 hover:bg-green-500 rounded-full font-semibold flex items-center justify-center transition-all duration-300">
+                        Check SSL
+                    </button>
+                </div>
+            </form>
+
+            <div id="results-container" class="text-left bg-white/5 p-6 rounded-lg min-h-[150px]">
+                <p class="text-blue-200/60">Results will be displayed here...</p>
+            </div>
+
+            <div class="my-8">
+                <div
+                    class="adsense-container text-center my-4 min-h-[90px] flex items-center justify-center bg-white/5 rounded-lg w-full">
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8050638035807727"
+                        data-ad-slot="5928091834" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                </div>
+            </div>
+
+            <div class="mt-16 text-left space-y-8">
+                <div class="prose prose-invert max-w-none">
+                    <h2 class="text-3xl font-bold text-blue-200">Understanding SSL Certificates</h2>
+                    <p>SSL (Secure Sockets Layer) certificates are essential for website security. They encrypt data
+                        transmitted between a user's browser and your web server, protecting sensitive information like
+                        passwords and credit card numbers.</p>
+
+                    <h3 class="text-2xl font-bold text-blue-300 mt-6">Why SSL Matters</h3>
+                    <div class="grid md:grid-cols-2 gap-6 mt-4">
+                        <div class="bg-white/5 p-5 rounded-lg border border-white/10">
+                            <h4 class="text-lg font-bold text-green-300 mb-2">🔒 Data Encryption</h4>
+                            <p class="text-sm">SSL encrypts all data transmitted between the browser and server,
+                                protecting against eavesdropping and man-in-the-middle attacks.</p>
+                        </div>
+                        <div class="bg-white/5 p-5 rounded-lg border border-white/10">
+                            <h4 class="text-lg font-bold text-green-300 mb-2">📈 SEO Benefits</h4>
+                            <p class="text-sm">Google uses HTTPS as a ranking signal. Sites with valid SSL certificates
+                                may rank higher in search results.</p>
+                        </div>
+                        <div class="bg-white/5 p-5 rounded-lg border border-white/10">
+                            <h4 class="text-lg font-bold text-green-300 mb-2">🛡️ Trust & Credibility</h4>
+                            <p class="text-sm">Browsers display security indicators for HTTPS sites, building user trust
+                                and reducing bounce rates.</p>
+                        </div>
+                        <div class="bg-white/5 p-5 rounded-lg border border-white/10">
+                            <h4 class="text-lg font-bold text-green-300 mb-2">⚖️ Compliance</h4>
+                            <p class="text-sm">Many regulations (PCI DSS, GDPR, HIPAA) require SSL encryption for
+                                handling sensitive data.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-bold text-blue-300 mt-8">Certificate Types</h3>
+                    <ul class="list-disc list-inside space-y-3 mt-4 text-blue-100/90">
+                        <li><strong>Domain Validated (DV):</strong> Basic encryption, verifies domain ownership only.
+                            Quick to obtain.</li>
+                        <li><strong>Organization Validated (OV):</strong> Verifies organization identity. Shows company
+                            name in certificate details.</li>
+                        <li><strong>Extended Validation (EV):</strong> Highest level of trust. Requires thorough vetting
+                            of the organization.</li>
+                        <li><strong>Wildcard:</strong> Covers a domain and all its subdomains (*.example.com).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="/"
+                    class="inline-block px-8 py-3 bg-blue-600/50 hover:bg-blue-600/80 rounded-lg font-semibold transition-colors">
+                    &larr; Back to Domain Generator
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-6 px-4 mt-12 border-t border-white/10">
+        <div class="container mx-auto text-center text-blue-200/60">
+            <p>&copy; 2024 FindAName.live. All rights reserved.</p>
+            <div class="mt-2 space-x-4">
+                <a href="/privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
+                <span>|</span>
+                <a href="/terms.html" class="hover:text-blue-300 transition-colors">Terms of Service</a>
+                <span>|</span>
+                <a href="/contact.html" class="hover:text-blue-300 transition-colors">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('footer p').innerHTML = `&copy; ${new Date().getFullYear()} FindAName.live. All rights reserved.`;
+
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('menu-open-icon');
+            const closeIcon = document.getElementById('menu-close-icon');
+
+            if (menuButton && mobileMenu && openIcon && closeIcon) {
+                menuButton.addEventListener('click', function () {
+                    mobileMenu.classList.toggle('translate-x-full');
+                    openIcon.classList.toggle('hidden');
+                    closeIcon.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+    <script type="module" src="/src/tools.js" defer></script>
+</body>
+
+</html>
