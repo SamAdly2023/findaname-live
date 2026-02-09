@@ -36,10 +36,22 @@ export const MetaAnalyzerTool: React.FC = () => {
         }
 
         try {
-            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`);
+            // Add timeout to prevent hanging
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+            
+            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`, {
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch page');
+            }
+            
             const data = await response.json();
 
-            if (data.contents) {
+            if (data.contents && !data.contents.includes('Access Denied') && data.contents.length > 500) {
                 const html = data.contents;
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
@@ -113,9 +125,13 @@ export const MetaAnalyzerTool: React.FC = () => {
             } else {
                 setError("Could not fetch the page. Please check the URL.");
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error("Meta Analyzer Error", err);
-            setError("Failed to analyze the page. Please try again.");
+            if (err.name === 'AbortError') {
+                setError("Request timed out. The website may be slow or blocking requests.");
+            } else {
+                setError("Failed to analyze the page. Some sites block automated requests. Try entering a different URL.");
+            }
         } finally {
             setIsLoading(false);
         }

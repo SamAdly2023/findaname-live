@@ -27,10 +27,22 @@ export const TechStackTool: React.FC = () => {
         }
 
         try {
-            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`);
+            // Add timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+            
+            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`, {
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch page');
+            }
+            
             const data = await response.json();
 
-            if (data.contents) {
+            if (data.contents && data.contents.length > 100) {
                 const html = data.contents.toLowerCase();
                 const headers = data.status?.response_headers || {};
                 const detectedTech: TechStackResult[] = [];
@@ -139,9 +151,13 @@ export const TechStackTool: React.FC = () => {
             } else {
                 setError("Could not fetch the page. Please check the URL.");
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error("Tech Stack Detection Error", err);
-            setError("Failed to analyze the page. Please try again.");
+            if (err.name === 'AbortError') {
+                setError("Request timed out. The website may be slow or blocking requests.");
+            } else {
+                setError("Failed to analyze the page. Some sites block automated requests.");
+            }
         } finally {
             setIsLoading(false);
         }

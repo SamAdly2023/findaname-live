@@ -35,7 +35,19 @@ export const RobotsTool: React.FC = () => {
         const robotsUrl = `https://${cleanDomain}/robots.txt`;
 
         try {
-            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(robotsUrl)}`);
+            // Add timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(robotsUrl)}`, {
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch robots.txt');
+            }
+
             const data = await response.json();
 
             if (data.contents && !data.contents.includes('<!DOCTYPE') && !data.contents.includes('<html')) {
@@ -121,9 +133,13 @@ export const RobotsTool: React.FC = () => {
                     score: 0
                 });
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error("Robots.txt Check Error", err);
-            setError("Failed to fetch robots.txt. Please try again.");
+            if (err.name === 'AbortError') {
+                setError("Request timed out. The website may be slow or blocking requests.");
+            } else {
+                setError("Failed to fetch robots.txt. Some sites may block automated requests.");
+            }
         } finally {
             setIsLoading(false);
         }
@@ -181,8 +197,8 @@ export const RobotsTool: React.FC = () => {
                                 </p>
                             </div>
                             <div className={`ml-auto text-3xl font-bold px-4 py-2 rounded-lg ${results.score >= 80 ? 'text-green-400 bg-green-900/30' :
-                                    results.score >= 50 ? 'text-yellow-400 bg-yellow-900/30' :
-                                        'text-red-400 bg-red-900/30'
+                                results.score >= 50 ? 'text-yellow-400 bg-yellow-900/30' :
+                                    'text-red-400 bg-red-900/30'
                                 }`}>
                                 {results.score}%
                             </div>

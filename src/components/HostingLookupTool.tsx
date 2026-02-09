@@ -75,23 +75,23 @@ export const HostingLookupTool: React.FC = () => {
                 return;
             }
 
-            // Get IP info using ip-api.com (free, no API key needed)
+            // Get IP info using ipapi.co (HTTPS, free tier)
             const ip = ipAddresses[0];
-            const ipInfoResponse = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,city,isp,org,as`);
+            const ipInfoResponse = await fetch(`https://ipapi.co/${ip}/json/`);
             const ipInfo = await ipInfoResponse.json();
 
-            if (ipInfo.status === 'success') {
-                const provider = identifyProvider(ipInfo.org || '', ipInfo.isp || '', ipInfo.as || '');
+            if (!ipInfo.error) {
+                const provider = identifyProvider(ipInfo.org || '', ipInfo.org || '', ipInfo.asn || '');
 
                 setResults({
                     domain: cleanDomain,
                     ipAddresses,
                     provider,
                     organization: ipInfo.org || 'Unknown',
-                    asn: ipInfo.as || 'Unknown',
-                    country: ipInfo.country || 'Unknown',
+                    asn: ipInfo.asn || 'Unknown',
+                    country: ipInfo.country_name || 'Unknown',
                     city: ipInfo.city || 'Unknown',
-                    isp: ipInfo.isp || 'Unknown'
+                    isp: ipInfo.org || 'Unknown'
                 });
             } else {
                 // Fallback if IP lookup fails

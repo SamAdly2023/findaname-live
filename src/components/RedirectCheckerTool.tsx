@@ -49,7 +49,15 @@ export const RedirectCheckerTool: React.FC = () => {
 
             // Check if HTTPS version works
             const httpsUrl = targetUrl.replace('http://', 'https://');
-            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(httpsUrl)}`);
+            
+            // Add timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+            
+            const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(httpsUrl)}`, {
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
 
             if (response.ok) {
                 const data = await response.json();
@@ -99,9 +107,13 @@ export const RedirectCheckerTool: React.FC = () => {
                     hasWwwRedirect: false
                 });
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error("Redirect Check Error", err);
-            setError("Failed to check redirects. Please try again.");
+            if (err.name === 'AbortError') {
+                setError("Request timed out. The website may be slow or blocking requests.");
+            } else {
+                setError("Failed to check redirects. Some sites block automated requests.");
+            }
         } finally {
             setIsLoading(false);
         }
